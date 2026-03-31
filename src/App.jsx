@@ -18,6 +18,29 @@ const BASE_BULLET_POINTS = [
   '작은 물건을 올려두기에 안성맞춤입니다.',
 ];
 
+const DEFAULT_LAYOUT_VARS = {
+  '--desktop-frame-width': '962px',
+  '--desktop-frame-height': '1019px',
+  '--desktop-main-width': '625px',
+  '--desktop-side-width': '321px',
+  '--desktop-column-gap': '16px',
+  '--desktop-main-height': '802px',
+  '--desktop-left-gap': '32px',
+  '--desktop-right-gap': '32px',
+  '--desktop-detail-gap': '16px',
+  '--desktop-detail-top-height': '393px',
+  '--desktop-detail-bottom-height': '393px',
+  '--desktop-detail-top-transform': 'scale(1.0461)',
+  '--desktop-detail-top-origin': 'center top',
+  '--desktop-copy-height': '185px',
+  '--desktop-copy-padding': '8px 0',
+  '--desktop-copy-gap': '16px',
+  '--mobile-stack-gap': '4px',
+  '--mobile-image-1-ratio': '402 / 516',
+  '--mobile-image-2-ratio': '402 / 491',
+  '--mobile-image-3-ratio': '402 / 491',
+};
+
 const isMobileViewport = () => (typeof window !== 'undefined' ? window.matchMedia(MOBILE_MEDIA_QUERY).matches : false);
 
 const createMockImageAsset = ({ label, startColor, endColor }) => {
@@ -33,6 +56,7 @@ const PRODUCT_OBJECTS = [
     detailTitle: '앤티크에서 영감을 받은 벽걸이 선반',
     bulletPoints: BASE_BULLET_POINTS,
     images: [mainImage, detailTopImage, detailBottomImage],
+    layoutVars: {},
   },
   {
     id: 'mock-object-01',
@@ -50,6 +74,21 @@ const PRODUCT_OBJECTS = [
       createMockImageAsset({ label: 'Mock 01 / Detail A', startColor: '#4A4E69', endColor: '#9A8C98' }),
       createMockImageAsset({ label: 'Mock 01 / Detail B', startColor: '#6B705C', endColor: '#B7B7A4' }),
     ],
+    layoutVars: {
+      '--desktop-main-height': '780px',
+      '--desktop-left-gap': '24px',
+      '--desktop-right-gap': '24px',
+      '--desktop-detail-gap': '12px',
+      '--desktop-detail-top-height': '384px',
+      '--desktop-detail-bottom-height': '384px',
+      '--desktop-detail-top-transform': 'none',
+      '--desktop-copy-height': '206px',
+      '--desktop-copy-padding': '12px 0 0',
+      '--mobile-stack-gap': '8px',
+      '--mobile-image-1-ratio': '402 / 540',
+      '--mobile-image-2-ratio': '402 / 470',
+      '--mobile-image-3-ratio': '402 / 470',
+    },
   },
   {
     id: 'mock-object-02',
@@ -67,6 +106,20 @@ const PRODUCT_OBJECTS = [
       createMockImageAsset({ label: 'Mock 02 / Detail A', startColor: '#B56576', endColor: '#E56B6F' }),
       createMockImageAsset({ label: 'Mock 02 / Detail B', startColor: '#6C757D', endColor: '#ADB5BD' }),
     ],
+    layoutVars: {
+      '--desktop-main-height': '760px',
+      '--desktop-left-gap': '40px',
+      '--desktop-right-gap': '40px',
+      '--desktop-detail-gap': '20px',
+      '--desktop-detail-top-height': '370px',
+      '--desktop-detail-bottom-height': '370px',
+      '--desktop-copy-height': '230px',
+      '--desktop-copy-padding': '16px 0 0',
+      '--mobile-stack-gap': '12px',
+      '--mobile-image-1-ratio': '402 / 500',
+      '--mobile-image-2-ratio': '402 / 460',
+      '--mobile-image-3-ratio': '402 / 520',
+    },
   },
 ];
 
@@ -138,6 +191,10 @@ function App() {
 
   const currentObject = PRODUCT_OBJECTS[objectIndex];
   const [mainObjectImage, detailObjectImageTop, detailObjectImageBottom] = currentObject.images;
+  const currentLayoutVars = {
+    ...DEFAULT_LAYOUT_VARS,
+    ...(currentObject.layoutVars ?? {}),
+  };
 
   return (
     <div className="page-root">
@@ -146,7 +203,7 @@ function App() {
       </header>
 
       {!isMobile && (
-        <div className="desktop-view" data-node-id="2:14">
+        <div className="desktop-view" data-node-id="2:14" style={currentLayoutVars}>
           <button
             className="nav-arrow nav-arrow-left"
             type="button"
@@ -202,7 +259,7 @@ function App() {
       )}
 
       {isMobile && (
-        <div className="mobile-view" data-node-id="2:162">
+        <div className="mobile-view" data-node-id="2:162" style={currentLayoutVars}>
           <main className="mobile-main">
             <section className="mobile-image-stack" data-node-id="17:201">
               <div className="mobile-image mobile-image-1" data-node-id="2:174">
