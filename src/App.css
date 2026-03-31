@@ -100,7 +100,8 @@ body {
 
 .nav-arrow {
   position: absolute;
-  top: 715px;
+  top: calc(24px + (1019px / 2));
+  transform: translateY(-50%);
   width: 32px;
   height: 32px;
   border: 0;
@@ -235,6 +236,10 @@ body {
   margin-top: 99px;
 }
 
+.desktop-footer .footer-content {
+  padding-bottom: 0;
+}
+
 .footer-content {
   width: var(--content-width);
   margin: 0 auto;
@@ -289,7 +294,7 @@ body {
     display: block;
     position: relative;
     background: var(--page-bg);
-    padding-bottom: calc(64px + env(safe-area-inset-bottom));
+    padding-bottom: 0;
   }
 
   .site-header {
@@ -356,7 +361,7 @@ body {
 
   .mobile-footer-content {
     width: 100%;
-    padding: 32px 16px;
+    padding: 32px 16px calc(32px + 64px + env(safe-area-inset-bottom));
   }
 
   .mobile-bottom-nav {
@@ -365,15 +370,41 @@ body {
     right: 0;
     bottom: 0;
     z-index: 1000;
+    isolation: isolate;
+    overflow: hidden;
     display: flex;
     justify-content: space-between;
     align-items: center;
     min-height: 51px;
-    padding: 12px 24px calc(12px + env(safe-area-inset-bottom));
-    background: var(--page-bg);
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    background: rgba(245, 245, 245, 0.58);
+    border-top: 0.5px solid rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(20px) saturate(145%);
+    -webkit-backdrop-filter: blur(20px) saturate(145%);
+    box-shadow:
+      0 -8px 24px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.62);
+  }
+
+  .mobile-bottom-nav::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.8;
+    background: linear-gradient(
+      -45deg,
+      rgba(255, 255, 255, 0.66) 0%,
+      rgba(255, 255, 255, 0.34) 33%,
+      rgba(255, 255, 255, 0.14) 68%,
+      rgba(255, 255, 255, 0.04) 100%
+    );
   }
 
   .mobile-nav-btn {
+    position: relative;
+    z-index: 1;
     border: 0;
     background: transparent;
     padding: 0;
@@ -394,5 +425,11 @@ body {
     height: 24px;
     display: block;
     flex: 0 0 auto;
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .mobile-bottom-nav {
+      background: rgba(245, 245, 245, 0.94);
+    }
   }
 }
