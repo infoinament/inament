@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-import wallShelfMainImage from './assets/objects/wall-shelf/main.jpg';
-import wallShelfDetailTopImage from './assets/objects/wall-shelf/detail-top.jpg';
-import wallShelfDetailBottomImage from './assets/objects/wall-shelf/detail-bottom.jpg';
-import kitchenRackImage1 from './assets/objects/kitchen-rack/img-kitchen-rack-1.png';
-import kitchenRackImage2 from './assets/objects/kitchen-rack/img-kitchen-rack-2.jpg';
-import kitchenRackImage3 from './assets/objects/kitchen-rack/img-kitchen-rack-3.jpg';
-import pocketTrayImage1 from './assets/objects/pocket-tray/img-pocket-tray-1.jpg';
-import pocketTrayImage2 from './assets/objects/pocket-tray/img-pocket-tray-2.jpg';
-import pocketTrayImage3 from './assets/objects/pocket-tray/img-pocket-tray-3.jpg';
-import plainShelfImage1 from './assets/objects/plain-shelf/img-plain-shelf-1.jpg';
-import plainShelfImage2 from './assets/objects/plain-shelf/img-plain-shelf-2.jpg';
-import plainShelfImage3 from './assets/objects/plain-shelf/img-plain-shelf-3.jpg';
+import wallShelfMainImage from './assets/objects/wall-shelf/main.webp';
+import wallShelfDetailTopImage from './assets/objects/wall-shelf/detail-top.webp';
+import wallShelfDetailBottomImage from './assets/objects/wall-shelf/detail-bottom.webp';
+import kitchenRackImage1 from './assets/objects/kitchen-rack/img-kitchen-rack-1.webp';
+import kitchenRackImage2 from './assets/objects/kitchen-rack/img-kitchen-rack-2.webp';
+import kitchenRackImage3 from './assets/objects/kitchen-rack/img-kitchen-rack-3.webp';
+import pocketTrayImage1 from './assets/objects/pocket-tray/img-pocket-tray-1.webp';
+import pocketTrayImage2 from './assets/objects/pocket-tray/img-pocket-tray-2.webp';
+import pocketTrayImage3 from './assets/objects/pocket-tray/img-pocket-tray-3.webp';
+import plainShelfImage1 from './assets/objects/plain-shelf/img-plain-shelf-1.webp';
+import plainShelfImage2 from './assets/objects/plain-shelf/img-plain-shelf-2.webp';
+import plainShelfImage3 from './assets/objects/plain-shelf/img-plain-shelf-3.webp';
 import logoBlack from './assets/logo-inament-black.svg';
 import logoFooter from './assets/logo-inament-footer.svg';
 import arrowLeftIcon from './assets/ic-arrow-left.svg';
@@ -80,6 +80,17 @@ const DEFAULT_LAYOUT_VARS = {
 const isMobileViewport = () => (typeof window !== 'undefined' ? window.matchMedia(MOBILE_MEDIA_QUERY).matches : false);
 const prefersReducedMotion = () =>
   typeof window !== 'undefined' ? window.matchMedia(REDUCED_MOTION_MEDIA_QUERY).matches : false;
+
+const preloadObjectImages = (objectData) => {
+  if (typeof window === 'undefined' || !objectData) {
+    return;
+  }
+
+  objectData.images.forEach((imageSrc) => {
+    const image = new Image();
+    image.src = imageSrc;
+  });
+};
 
 const PRODUCT_OBJECTS = [
   {
@@ -223,6 +234,17 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    if (PRODUCT_OBJECTS.length < 2) {
+      return;
+    }
+
+    const nextIndex = (objectIndex + 1) % PRODUCT_OBJECTS.length;
+    const prevIndex = (objectIndex - 1 + PRODUCT_OBJECTS.length) % PRODUCT_OBJECTS.length;
+    preloadObjectImages(PRODUCT_OBJECTS[nextIndex]);
+    preloadObjectImages(PRODUCT_OBJECTS[prevIndex]);
+  }, [objectIndex]);
+
   const currentObject = PRODUCT_OBJECTS[objectIndex];
   const [mainObjectImage, detailObjectImageTop, detailObjectImageBottom] = currentObject.images;
   const currentLayoutVars = {
@@ -266,7 +288,7 @@ function App() {
             <main className="desktop-content-frame" data-node-id="2:121">
               <section className="desktop-left-column" data-node-id="2:117">
                 <div className="main-image-wrap" data-node-id="2:103">
-                  <img src={mainObjectImage} alt={currentObject.name} loading="eager" />
+                  <img src={mainObjectImage} alt={currentObject.name} loading="eager" fetchPriority="high" decoding="async" />
                 </div>
                 <h1 className="product-title" data-node-id="2:18">
                   {currentObject.name}
@@ -276,10 +298,10 @@ function App() {
               <section className="desktop-right-column" data-node-id="2:119">
                 <div className="desktop-detail-grid" data-node-id="2:106">
                   <div className="detail-image detail-image-top" data-node-id="2:104">
-                    <img src={detailObjectImageTop} alt="" aria-hidden="true" loading="lazy" />
+                    <img src={detailObjectImageTop} alt="" aria-hidden="true" loading="lazy" decoding="async" />
                   </div>
                   <div className="detail-image detail-image-bottom" data-node-id="2:105">
-                    <img src={detailObjectImageBottom} alt="" aria-hidden="true" loading="lazy" />
+                    <img src={detailObjectImageBottom} alt="" aria-hidden="true" loading="lazy" decoding="async" />
                   </div>
                 </div>
                 <ProductCopy
@@ -304,13 +326,13 @@ function App() {
             <main className="mobile-main">
               <section className="mobile-image-stack" data-node-id="17:201">
                 <div className="mobile-image mobile-image-1" data-node-id="2:174">
-                  <img src={mainObjectImage} alt={currentObject.name} loading="eager" />
+                  <img src={mainObjectImage} alt={currentObject.name} loading="eager" fetchPriority="high" decoding="async" />
                 </div>
                 <div className="mobile-image mobile-image-2" data-node-id="17:196">
-                  <img src={detailObjectImageTop} alt="" aria-hidden="true" loading="lazy" />
+                  <img src={detailObjectImageTop} alt="" aria-hidden="true" loading="lazy" decoding="async" />
                 </div>
                 <div className="mobile-image mobile-image-3" data-node-id="17:200">
-                  <img src={detailObjectImageBottom} alt="" aria-hidden="true" loading="lazy" />
+                  <img src={detailObjectImageBottom} alt="" aria-hidden="true" loading="lazy" decoding="async" />
                 </div>
               </section>
 

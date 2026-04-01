@@ -16,7 +16,7 @@
 
 @font-face {
   font-family: 'Noto Serif KR Local';
-  src: url('./assets/fonts/NotoSerifKR-Variable.ttf') format('truetype');
+  src: url('./assets/fonts/NotoSerifKR-Variable.woff2') format('woff2');
   font-style: normal;
   font-weight: 200 900;
   font-display: swap;
@@ -28,7 +28,7 @@
     local('210 SoomyungjoOTF'),
     local('210수명조OTF'),
     local('210 Soomyungjo'),
-    url('./assets/fonts/NotoSerifKR-Variable.ttf') format('truetype');
+    url('./assets/fonts/NotoSerifKR-Variable.woff2') format('woff2');
   font-style: normal;
   font-weight: 400;
   font-display: swap;
