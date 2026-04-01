@@ -608,15 +608,16 @@ body {
     min-height: 51px;
     padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
     background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.22) 100%),
-      rgba(239, 234, 230, 0.18);
-    border-top: 1px solid rgba(255, 255, 255, 0.62);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.24);
-    backdrop-filter: blur(4px) saturate(180%);
-    -webkit-backdrop-filter: blur(4px) saturate(180%);
+      linear-gradient(180deg, rgba(255, 255, 255, 0.56) 0%, rgba(255, 255, 255, 0.28) 46%, rgba(237, 233, 230, 0.22) 100%),
+      rgba(236, 232, 229, 0.22);
+    border-top: 1px solid rgba(255, 255, 255, 0.76);
+    border-bottom: 1px solid rgba(124, 116, 108, 0.12);
+    backdrop-filter: blur(4px) saturate(188%) contrast(1.05);
+    -webkit-backdrop-filter: blur(4px) saturate(188%) contrast(1.05);
     box-shadow:
-      0 -10px 20px rgba(0, 0, 0, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.72);
+      0 -12px 24px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.78),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.28);
   }
 
   .mobile-bottom-nav::before {
@@ -625,14 +626,21 @@ body {
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    opacity: 0.8;
-    background: linear-gradient(
-      -45deg,
-      rgba(255, 255, 255, 0.72) 0%,
-      rgba(255, 255, 255, 0.38) 28%,
-      rgba(255, 255, 255, 0.12) 58%,
-      rgba(255, 255, 255, 0.34) 100%
-    );
+    opacity: 0.9;
+    background:
+      linear-gradient(
+        -45deg,
+        rgba(255, 255, 255, 0.78) 0%,
+        rgba(255, 255, 255, 0.42) 26%,
+        rgba(255, 255, 255, 0.16) 56%,
+        rgba(255, 255, 255, 0.36) 100%
+      ),
+      radial-gradient(
+        120% 98% at 14% -20%,
+        rgba(255, 255, 255, 0.48) 0%,
+        rgba(255, 255, 255, 0.1) 60%,
+        rgba(255, 255, 255, 0) 100%
+      );
     mix-blend-mode: screen;
   }
 
@@ -642,23 +650,23 @@ body {
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.42);
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
     background:
       radial-gradient(
-        130% 90% at 50% -26%,
-        rgba(255, 255, 255, 0.48) 0%,
-        rgba(255, 255, 255, 0.14) 56%,
+        136% 92% at 50% -26%,
+        rgba(255, 255, 255, 0.56) 0%,
+        rgba(255, 255, 255, 0.18) 54%,
         rgba(255, 255, 255, 0) 100%
       ),
       linear-gradient(
         -45deg,
-        rgba(255, 132, 126, 0.09) 0%,
-        rgba(255, 214, 119, 0.07) 24%,
-        rgba(144, 185, 255, 0.08) 54%,
+        rgba(255, 129, 122, 0.1) 0%,
+        rgba(255, 212, 117, 0.08) 24%,
+        rgba(143, 184, 255, 0.09) 52%,
         rgba(255, 255, 255, 0) 82%
       );
-    filter: blur(10px);
-    opacity: 0.5;
+    filter: blur(6px);
+    opacity: 0.58;
   }
 
   .mobile-nav-btn {
