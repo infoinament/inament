@@ -103,10 +103,85 @@ body {
   column-gap: var(--desktop-column-gap, 16px);
 }
 
+.object-transition {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+  filter: none;
+  will-change: transform, opacity, filter;
+}
+
+.object-transition--idle {
+  pointer-events: auto;
+}
+
+.object-transition--exit {
+  pointer-events: none;
+  transition:
+    transform 140ms cubic-bezier(0.28, 0.02, 0.16, 1),
+    opacity 140ms ease-out,
+    filter 140ms ease-out;
+}
+
+.object-transition--exit.object-transition--next {
+  transform: translate3d(-26px, 0, 0);
+  opacity: 0;
+  filter: blur(2px);
+}
+
+.object-transition--exit.object-transition--prev {
+  transform: translate3d(26px, 0, 0);
+  opacity: 0;
+  filter: blur(2px);
+}
+
+.object-transition--enter {
+  pointer-events: none;
+  animation-duration: 260ms;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.18, 0.8, 0.2, 1);
+}
+
+.object-transition--enter.object-transition--next {
+  animation-name: object-enter-from-right;
+}
+
+.object-transition--enter.object-transition--prev {
+  animation-name: object-enter-from-left;
+}
+
+@keyframes object-enter-from-right {
+  0% {
+    transform: translate3d(26px, 0, 0);
+    opacity: 0;
+    filter: blur(2px);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+    filter: none;
+  }
+}
+
+@keyframes object-enter-from-left {
+  0% {
+    transform: translate3d(-26px, 0, 0);
+    opacity: 0;
+    filter: blur(2px);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+    filter: none;
+  }
+}
+
 .nav-arrow {
   position: absolute;
   top: calc(24px + (var(--desktop-frame-height, 1019px) / 2));
   transform: translateY(-50%);
+  z-index: 2;
   width: 32px;
   height: 32px;
   border: 0;
@@ -128,6 +203,11 @@ body {
   width: 100%;
   height: 100%;
   display: block;
+}
+
+.nav-arrow:disabled {
+  cursor: default;
+  opacity: 0.42;
 }
 
 .desktop-left-column {
@@ -293,6 +373,23 @@ body {
 
 .mobile-bottom-nav {
   display: none;
+}
+
+.mobile-nav-btn:disabled {
+  cursor: default;
+  opacity: 0.42;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .object-transition,
+  .object-transition--exit,
+  .object-transition--enter {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
 }
 
 @media (min-width: 1160px) {

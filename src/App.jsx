@@ -1,8 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import wallShelfMainImage from './assets/objects/wall-shelf/main.jpg';
 import wallShelfDetailTopImage from './assets/objects/wall-shelf/detail-top.jpg';
 import wallShelfDetailBottomImage from './assets/objects/wall-shelf/detail-bottom.jpg';
-import woodLackFrontImage from './assets/objects/wood-lack/front.png';
+import kitchenRackImage1 from './assets/objects/kitchen-rack/img-kitchen-rack-1.png';
+import kitchenRackImage2 from './assets/objects/kitchen-rack/img-kitchen-rack-2.jpg';
+import kitchenRackImage3 from './assets/objects/kitchen-rack/img-kitchen-rack-3.jpg';
+import pocketTrayImage1 from './assets/objects/pocket-tray/img-pocket-tray-1.jpg';
+import pocketTrayImage2 from './assets/objects/pocket-tray/img-pocket-tray-2.jpg';
+import pocketTrayImage3 from './assets/objects/pocket-tray/img-pocket-tray-3.jpg';
+import plainShelfImage1 from './assets/objects/plain-shelf/img-plain-shelf-1.jpg';
+import plainShelfImage2 from './assets/objects/plain-shelf/img-plain-shelf-2.jpg';
+import plainShelfImage3 from './assets/objects/plain-shelf/img-plain-shelf-3.jpg';
 import logoBlack from './assets/logo-inament-black.svg';
 import logoFooter from './assets/logo-inament-footer.svg';
 import arrowLeftIcon from './assets/ic-arrow-left.svg';
@@ -10,6 +18,9 @@ import arrowRightIcon from './assets/ic-arrow-right.svg';
 
 const MOBILE_BREAKPOINT = 1160;
 const MOBILE_MEDIA_QUERY = `(max-width: ${MOBILE_BREAKPOINT - 1}px)`;
+const REDUCED_MOTION_MEDIA_QUERY = '(prefers-reduced-motion: reduce)';
+const OBJECT_TRANSITION_EXIT_MS = 140;
+const OBJECT_TRANSITION_ENTER_MS = 260;
 
 const WALL_SHELF_BULLET_POINTS = [
   '견고한 오크를 손으로 직접 조각하여 제작했습니다.',
@@ -19,12 +30,28 @@ const WALL_SHELF_BULLET_POINTS = [
   '작은 물건을 올려두기에 안성맞춤입니다.',
 ];
 
-const WOOD_LACK_BULLET_POINTS = [
-  '전면 우드 그레인 질감이 강조된 오브젝트입니다.',
-  '미니멀한 실루엣으로 공간에 가볍게 배치할 수 있습니다.',
-  '실제 촬영컷 추가 시 동일한 레이아웃 구조를 그대로 사용합니다.',
-  '현재는 전달받은 front 이미지 기반으로 미리보기 구성했습니다.',
-  '오브젝트별 레이아웃 변수로 높이/비율을 독립 제어할 수 있습니다.',
+const KITCHEN_RACK_BULLET_POINTS = [
+  '오크의 결을 살려 내추럴한 무드를 담았습니다.',
+  '하드 오일 마감으로 방수성, 내구성을 높였습니다.',
+  '균형 잡힌 비례와 안정감으로 공간이 편안해집니다.',
+  '오븐 옆이나 주방 코너, 어디에 두어도 좋습니다.',
+  '자주 쓰는 접시부터 커피잔, 레시피북까지 가지런히 수납할 수 있어요.',
+];
+
+const POCKET_TRAY_BULLET_POINTS = [
+  '패턴 유리로 텍스쳐와 디테일이 돋보입니다.',
+  '하드 오일로 방수성과 체리의 색을 살렸습니다.',
+  '커피, 온더락, 악세서리까지 다양하게 올려두세요.',
+  '실용적이면서도 테이블에 따뜻함과 질감을 더해줍니다.',
+];
+
+const PLAIN_SHELF_BULLET_POINTS = [
+  '오래 두어도 질리지 않는 정갈한 디자인입니다.',
+  '내구성과 결을 살린 깊이 있는 오일 마감입니다.',
+  '뒷판을 넣어서 물건이 뒤로 넘어가지 않습니다.',
+  '걸레받이가 있어 바닥 청소가 용이합니다.',
+  '주방부터 거실까지 집 어디에 두어도 어울립니다.',
+  '책, 도자기, 주방용품 등 다양하게 수납할 수 있고, 잡동사니는 라탄 바구니에 넣어 연출해도 좋아요.',
 ];
 
 const DEFAULT_LAYOUT_VARS = {
@@ -51,6 +78,8 @@ const DEFAULT_LAYOUT_VARS = {
 };
 
 const isMobileViewport = () => (typeof window !== 'undefined' ? window.matchMedia(MOBILE_MEDIA_QUERY).matches : false);
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' ? window.matchMedia(REDUCED_MOTION_MEDIA_QUERY).matches : false;
 
 const PRODUCT_OBJECTS = [
   {
@@ -62,27 +91,28 @@ const PRODUCT_OBJECTS = [
     layoutVars: {},
   },
   {
-    id: 'wood-lack',
-    name: 'Wood Lack',
-    detailTitle: '우드 랙 오브젝트',
-    bulletPoints: WOOD_LACK_BULLET_POINTS,
-    images: [woodLackFrontImage, woodLackFrontImage, woodLackFrontImage],
-    layoutVars: {
-      '--desktop-main-height': '760px',
-      '--desktop-left-gap': '28px',
-      '--desktop-right-gap': '28px',
-      '--desktop-detail-gap': '12px',
-      '--desktop-detail-top-height': '374px',
-      '--desktop-detail-bottom-height': '374px',
-      '--desktop-detail-top-transform': 'none',
-      '--desktop-detail-bottom-transform': 'none',
-      '--desktop-copy-height': '206px',
-      '--desktop-copy-padding': '12px 0 0',
-      '--mobile-stack-gap': '8px',
-      '--mobile-image-1-ratio': '402 / 500',
-      '--mobile-image-2-ratio': '402 / 500',
-      '--mobile-image-3-ratio': '402 / 500',
-    },
+    id: 'kitchen-rack',
+    name: 'Kitchen Rack',
+    detailTitle: '단정한 무게감의 스탠딩 키친랙',
+    bulletPoints: KITCHEN_RACK_BULLET_POINTS,
+    images: [kitchenRackImage1, kitchenRackImage2, kitchenRackImage3],
+    layoutVars: {},
+  },
+  {
+    id: 'pocket-tray',
+    name: 'Pocket Tray',
+    detailTitle: '체리와 민트 빛 유리의 포켓 트레이',
+    bulletPoints: POCKET_TRAY_BULLET_POINTS,
+    images: [pocketTrayImage1, pocketTrayImage2, pocketTrayImage3],
+    layoutVars: {},
+  },
+  {
+    id: 'plain-shelf',
+    name: 'Plain Shelf',
+    detailTitle: '정갈한 오픈형 오크 수납장',
+    bulletPoints: PLAIN_SHELF_BULLET_POINTS,
+    images: [plainShelfImage1, plainShelfImage2, plainShelfImage3],
+    layoutVars: {},
   },
 ];
 
@@ -118,13 +148,53 @@ function FooterContent({ logoNodeId, textNodeId, copyrightNodeId, className = ''
 function App() {
   const [isMobile, setIsMobile] = useState(isMobileViewport);
   const [objectIndex, setObjectIndex] = useState(0);
+  const [transitionPhase, setTransitionPhase] = useState('idle');
+  const [transitionDirection, setTransitionDirection] = useState('next');
+  const transitionTimersRef = useRef([]);
+
+  const clearTransitionTimers = () => {
+    transitionTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+    transitionTimersRef.current = [];
+  };
+
+  const handleObjectChange = (direction) => {
+    if (transitionPhase !== 'idle') {
+      return;
+    }
+
+    if (prefersReducedMotion()) {
+      setObjectIndex((prev) =>
+        direction === 'next' ? (prev + 1) % PRODUCT_OBJECTS.length : (prev - 1 + PRODUCT_OBJECTS.length) % PRODUCT_OBJECTS.length,
+      );
+      return;
+    }
+
+    clearTransitionTimers();
+    setTransitionDirection(direction);
+    setTransitionPhase('exit');
+
+    const exitTimer = window.setTimeout(() => {
+      setObjectIndex((prev) =>
+        direction === 'next' ? (prev + 1) % PRODUCT_OBJECTS.length : (prev - 1 + PRODUCT_OBJECTS.length) % PRODUCT_OBJECTS.length,
+      );
+      setTransitionPhase('enter');
+
+      const enterTimer = window.setTimeout(() => {
+        setTransitionPhase('idle');
+      }, OBJECT_TRANSITION_ENTER_MS);
+
+      transitionTimersRef.current.push(enterTimer);
+    }, OBJECT_TRANSITION_EXIT_MS);
+
+    transitionTimersRef.current.push(exitTimer);
+  };
 
   const handlePrevious = () => {
-    setObjectIndex((prev) => (prev - 1 + PRODUCT_OBJECTS.length) % PRODUCT_OBJECTS.length);
+    handleObjectChange('prev');
   };
 
   const handleNext = () => {
-    setObjectIndex((prev) => (prev + 1) % PRODUCT_OBJECTS.length);
+    handleObjectChange('next');
   };
 
   useEffect(() => {
@@ -143,6 +213,7 @@ function App() {
     }
 
     return () => {
+      clearTransitionTimers();
       window.removeEventListener('resize', syncViewportMode);
       if (typeof mediaQueryList.removeEventListener === 'function') {
         mediaQueryList.removeEventListener('change', syncViewportMode);
@@ -158,6 +229,8 @@ function App() {
     ...DEFAULT_LAYOUT_VARS,
     ...(currentObject.layoutVars ?? {}),
   };
+  const isTransitioning = transitionPhase !== 'idle';
+  const transitionClassName = `object-transition object-transition--${transitionPhase} object-transition--${transitionDirection}`;
 
   return (
     <div className="page-root">
@@ -173,6 +246,7 @@ function App() {
             aria-label="Previous object"
             data-node-id="2:27"
             onClick={handlePrevious}
+            disabled={isTransitioning}
           >
             <img src={arrowLeftIcon} alt="" aria-hidden="true" />
           </button>
@@ -183,76 +257,81 @@ function App() {
             aria-label="Next object"
             data-node-id="2:29"
             onClick={handleNext}
+            disabled={isTransitioning}
           >
             <img src={arrowRightIcon} alt="" aria-hidden="true" />
           </button>
 
-          <main className="desktop-content-frame" data-node-id="2:121">
-            <section className="desktop-left-column" data-node-id="2:117">
-              <div className="main-image-wrap" data-node-id="2:103">
-                <img src={mainObjectImage} alt={currentObject.name} loading="eager" />
-              </div>
-              <h1 className="product-title" data-node-id="2:18">
-                {currentObject.name}
-              </h1>
-            </section>
-
-            <section className="desktop-right-column" data-node-id="2:119">
-              <div className="desktop-detail-grid" data-node-id="2:106">
-                <div className="detail-image detail-image-top" data-node-id="2:104">
-                  <img src={detailObjectImageTop} alt="" aria-hidden="true" loading="lazy" />
+          <div className={transitionClassName}>
+            <main className="desktop-content-frame" data-node-id="2:121">
+              <section className="desktop-left-column" data-node-id="2:117">
+                <div className="main-image-wrap" data-node-id="2:103">
+                  <img src={mainObjectImage} alt={currentObject.name} loading="eager" />
                 </div>
-                <div className="detail-image detail-image-bottom" data-node-id="2:105">
-                  <img src={detailObjectImageBottom} alt="" aria-hidden="true" loading="lazy" />
-                </div>
-              </div>
-              <ProductCopy
-                titleNodeId="2:19"
-                listNodeId="2:20"
-                detailTitle={currentObject.detailTitle}
-                bulletPoints={currentObject.bulletPoints}
-              />
-            </section>
-          </main>
+                <h1 className="product-title" data-node-id="2:18">
+                  {currentObject.name}
+                </h1>
+              </section>
 
-          <footer className="site-footer desktop-footer" data-node-id="2:127">
-            <FooterContent logoNodeId="2:152" textNodeId="2:24" copyrightNodeId="2:25" />
-          </footer>
+              <section className="desktop-right-column" data-node-id="2:119">
+                <div className="desktop-detail-grid" data-node-id="2:106">
+                  <div className="detail-image detail-image-top" data-node-id="2:104">
+                    <img src={detailObjectImageTop} alt="" aria-hidden="true" loading="lazy" />
+                  </div>
+                  <div className="detail-image detail-image-bottom" data-node-id="2:105">
+                    <img src={detailObjectImageBottom} alt="" aria-hidden="true" loading="lazy" />
+                  </div>
+                </div>
+                <ProductCopy
+                  titleNodeId="2:19"
+                  listNodeId="2:20"
+                  detailTitle={currentObject.detailTitle}
+                  bulletPoints={currentObject.bulletPoints}
+                />
+              </section>
+            </main>
+
+            <footer className="site-footer desktop-footer" data-node-id="2:127">
+              <FooterContent logoNodeId="2:152" textNodeId="2:24" copyrightNodeId="2:25" />
+            </footer>
+          </div>
         </div>
       )}
 
       {isMobile && (
         <div className="mobile-view" data-node-id="2:162" style={currentLayoutVars}>
-          <main className="mobile-main">
-            <section className="mobile-image-stack" data-node-id="17:201">
-              <div className="mobile-image mobile-image-1" data-node-id="2:174">
-                <img src={mainObjectImage} alt={currentObject.name} loading="eager" />
-              </div>
-              <div className="mobile-image mobile-image-2" data-node-id="17:196">
-                <img src={detailObjectImageTop} alt="" aria-hidden="true" loading="lazy" />
-              </div>
-              <div className="mobile-image mobile-image-3" data-node-id="17:200">
-                <img src={detailObjectImageBottom} alt="" aria-hidden="true" loading="lazy" />
-              </div>
-            </section>
+          <div className={transitionClassName}>
+            <main className="mobile-main">
+              <section className="mobile-image-stack" data-node-id="17:201">
+                <div className="mobile-image mobile-image-1" data-node-id="2:174">
+                  <img src={mainObjectImage} alt={currentObject.name} loading="eager" />
+                </div>
+                <div className="mobile-image mobile-image-2" data-node-id="17:196">
+                  <img src={detailObjectImageTop} alt="" aria-hidden="true" loading="lazy" />
+                </div>
+                <div className="mobile-image mobile-image-3" data-node-id="17:200">
+                  <img src={detailObjectImageBottom} alt="" aria-hidden="true" loading="lazy" />
+                </div>
+              </section>
 
-            <section className="mobile-text-block" data-node-id="17:207">
-              <h1 className="product-title mobile-product-title" data-node-id="17:202">
-                {currentObject.name}
-              </h1>
-              <ProductCopy
-                titleNodeId="17:205"
-                listNodeId="17:206"
-                detailTitle={currentObject.detailTitle}
-                bulletPoints={currentObject.bulletPoints}
-                className="mobile-product-copy"
-              />
-            </section>
+              <section className="mobile-text-block" data-node-id="17:207">
+                <h1 className="product-title mobile-product-title" data-node-id="17:202">
+                  {currentObject.name}
+                </h1>
+                <ProductCopy
+                  titleNodeId="17:205"
+                  listNodeId="17:206"
+                  detailTitle={currentObject.detailTitle}
+                  bulletPoints={currentObject.bulletPoints}
+                  className="mobile-product-copy"
+                />
+              </section>
 
-            <footer className="site-footer mobile-footer" data-node-id="17:208">
-              <FooterContent logoNodeId="17:211" textNodeId="17:220" copyrightNodeId="17:221" className="mobile-footer-content" />
-            </footer>
-          </main>
+              <footer className="site-footer mobile-footer" data-node-id="17:208">
+                <FooterContent logoNodeId="17:211" textNodeId="17:220" copyrightNodeId="17:221" className="mobile-footer-content" />
+              </footer>
+            </main>
+          </div>
 
           <nav className="mobile-bottom-nav" data-node-id="17:195" aria-label="Previous and next object navigation">
             <button
@@ -261,6 +340,7 @@ function App() {
               aria-label="Previous object"
               data-node-id="17:193"
               onClick={handlePrevious}
+              disabled={isTransitioning}
             >
               <img src={arrowLeftIcon} alt="" aria-hidden="true" data-node-id="2:186" />
               <span data-node-id="17:191">Previous Object</span>
@@ -271,6 +351,7 @@ function App() {
               aria-label="Next object"
               data-node-id="17:194"
               onClick={handleNext}
+              disabled={isTransitioning}
             >
               <span data-node-id="2:190">Next Object</span>
               <img src={arrowRightIcon} alt="" aria-hidden="true" data-node-id="2:188" />
