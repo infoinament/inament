@@ -67,7 +67,7 @@ const DEFAULT_LAYOUT_VARS = {
   '--desktop-detail-gap': '16px',
   '--desktop-detail-top-height': '393px',
   '--desktop-detail-bottom-height': '393px',
-  '--desktop-detail-top-transform': 'scale(1.0461)',
+  '--desktop-detail-top-transform': 'none',
   '--desktop-detail-top-origin': 'center top',
   '--desktop-copy-height': '185px',
   '--desktop-copy-padding': '8px 0',
