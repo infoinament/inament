@@ -1,0 +1,170 @@
+.desktop-view {
+  position: relative;
+  display: block;
+  overflow-x: scroll;
+  overflow-y: visible;
+  scrollbar-gutter: stable both-edges;
+}
+
+.desktop-content-frame {
+  width: max(
+    var(--desktop-frame-width, var(--content-width)),
+    calc(var(--desktop-main-width, 625px) + var(--desktop-side-width, 321px) + var(--desktop-column-gap, 16px))
+  );
+  min-width: calc(var(--desktop-main-width, 625px) + var(--desktop-side-width, 321px) + var(--desktop-column-gap, 16px));
+  height: var(--desktop-frame-height, 1019px);
+  margin: 24px auto 0;
+  display: grid;
+  grid-template-columns:
+    var(--desktop-main-width, 625px)
+    minmax(var(--desktop-side-width, 321px), var(--desktop-side-width, 321px));
+  column-gap: var(--desktop-column-gap, 16px);
+}
+
+.nav-arrow {
+  position: absolute;
+  top: calc(24px + (var(--desktop-frame-height, 1019px) / 2));
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  line-height: 0;
+  cursor: pointer;
+}
+
+.nav-arrow-left {
+  left: 48px;
+}
+
+.nav-arrow-right {
+  right: 48px;
+}
+
+.nav-arrow img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.nav-arrow:disabled {
+  cursor: default;
+  opacity: 0.42;
+}
+
+.desktop-left-column {
+  width: var(--desktop-main-width, 625px);
+  min-width: var(--desktop-main-width, 625px);
+  max-width: var(--desktop-main-width, 625px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--desktop-left-gap, 32px);
+}
+
+.main-image-wrap {
+  width: 100%;
+  height: var(--desktop-main-height, 802px);
+  overflow: hidden;
+}
+
+.main-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--desktop-main-object-position, center);
+  display: block;
+}
+
+.desktop-right-column {
+  width: var(--desktop-side-width, 321px);
+  min-width: var(--desktop-side-width, 321px);
+  max-width: var(--desktop-side-width, 321px);
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--desktop-right-gap, 32px);
+}
+
+.desktop-detail-grid {
+  width: var(--desktop-side-width, 321px);
+  min-width: var(--desktop-side-width, 321px);
+  max-width: var(--desktop-side-width, 321px);
+  height: calc(
+    var(--desktop-detail-top-height, 393px) + var(--desktop-detail-bottom-height, 393px) + var(--desktop-detail-gap, 16px)
+  );
+  display: flex;
+  flex-direction: column;
+  gap: var(--desktop-detail-gap, 16px);
+}
+
+.detail-image {
+  width: var(--desktop-side-width, 321px);
+  min-width: var(--desktop-side-width, 321px);
+  max-width: var(--desktop-side-width, 321px);
+  overflow: hidden;
+}
+
+.detail-image-top {
+  height: var(--desktop-detail-top-height, 393px);
+}
+
+.detail-image-bottom {
+  height: var(--desktop-detail-bottom-height, 393px);
+}
+
+.detail-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.detail-image-top img {
+  object-position: var(--desktop-detail-top-object-position, center top);
+  transform: var(--desktop-detail-top-transform, scale(1.0461));
+  transform-origin: var(--desktop-detail-top-origin, center top);
+}
+
+.detail-image-bottom img {
+  object-position: var(--desktop-detail-bottom-object-position, center);
+  transform: var(--desktop-detail-bottom-transform, none);
+  transform-origin: var(--desktop-detail-bottom-origin, center center);
+}
+
+.product-copy {
+  width: var(--desktop-side-width, 321px);
+  min-width: var(--desktop-side-width, 321px);
+  max-width: var(--desktop-side-width, 321px);
+  height: var(--desktop-copy-height, 185px);
+  padding: var(--desktop-copy-padding, 8px 0);
+  display: flex;
+  flex-direction: column;
+  gap: var(--desktop-copy-gap, 16px);
+}
+
+.desktop-footer {
+  margin-top: var(--content-footer-gap);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.desktop-footer .footer-content {
+  padding-bottom: 0;
+}
+
+.mobile-view,
+.mobile-bottom-nav {
+  display: none;
+}
+
+@media (min-width: 1160px) {
+  .desktop-view {
+    display: block;
+  }
+
+  .mobile-view,
+  .mobile-bottom-nav {
+    display: none;
+  }
+}

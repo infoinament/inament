@@ -36,3 +36,25 @@ git push origin main
 
 배포 URL:
 - `https://kurkim0661.github.io/inament/`
+
+## Refactor Architecture Guide
+
+### Module boundaries
+
+- `src/data/`: object catalog and static copy only
+- `src/constants/`: layout and transition constants
+- `src/hooks/`: viewport, object carousel, and image preload logic
+- `src/components/`: presentation/layout components
+- `src/styles/`: layered CSS (`base`, `transitions`, `desktop`, `mobile`)
+
+### Refactor verification
+
+```bash
+npm test
+npm run build
+npm run build:docs
+```
+
+- `npm test` runs `scripts/verify-refactor-architecture.mjs` and validates layout invariants from the PRD/test spec.
+- This project currently has no dedicated `lint` script; add one before enforcing lint in CI.
+

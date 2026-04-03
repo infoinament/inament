@@ -1,0 +1,148 @@
+.object-transition {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+  filter: none;
+  will-change: transform, opacity, filter;
+}
+
+.object-stage {
+  position: relative;
+}
+
+.object-transition--idle {
+  pointer-events: auto;
+}
+
+.object-transition--exit {
+  pointer-events: none;
+  transition:
+    transform 140ms cubic-bezier(0.28, 0.02, 0.16, 1),
+    opacity 140ms ease-out,
+    filter 140ms ease-out;
+}
+
+.object-transition--exit.object-transition--next {
+  transform: translate3d(-26px, 0, 0);
+  opacity: 0;
+  filter: blur(2px);
+}
+
+.object-transition--exit.object-transition--prev {
+  transform: translate3d(26px, 0, 0);
+  opacity: 0;
+  filter: blur(2px);
+}
+
+.object-transition--enter {
+  pointer-events: none;
+  animation-duration: 260ms;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.18, 0.8, 0.2, 1);
+}
+
+.object-transition--enter.object-transition--next {
+  animation-name: object-enter-from-right;
+}
+
+.object-transition--enter.object-transition--prev {
+  animation-name: object-enter-from-left;
+}
+
+.object-stage--loading {
+  pointer-events: none;
+}
+
+.object-stage--loading .desktop-content-frame,
+.object-stage--loading .desktop-footer,
+.object-stage--loading .mobile-main {
+  visibility: hidden;
+}
+
+.object-loading-indicator {
+  display: none;
+}
+
+.object-stage--loading .object-loading-indicator {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.64);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.object-loading-spinner {
+  width: 26px;
+  height: 26px;
+  border: 2px solid rgba(117, 117, 117, 0.2);
+  border-top-color: rgba(117, 117, 117, 0.82);
+  border-radius: 50%;
+  animation: object-loading-spin 0.85s linear infinite;
+}
+
+.object-loading-text {
+  color: rgba(117, 117, 117, 0.95);
+  font-family: 'Pretendard', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+@keyframes object-enter-from-right {
+  0% {
+    transform: translate3d(26px, 0, 0);
+    opacity: 0;
+    filter: blur(2px);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+    filter: none;
+  }
+}
+
+@keyframes object-enter-from-left {
+  0% {
+    transform: translate3d(-26px, 0, 0);
+    opacity: 0;
+    filter: blur(2px);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+    filter: none;
+  }
+}
+
+@keyframes object-loading-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .object-transition,
+  .object-transition--exit,
+  .object-transition--enter {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+
+  .object-loading-spinner {
+    animation: none;
+  }
+}

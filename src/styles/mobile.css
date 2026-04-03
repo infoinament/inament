@@ -1,0 +1,203 @@
+.mobile-nav-btn:disabled {
+  cursor: default;
+  opacity: 0.42;
+}
+
+@media (max-width: 1159px) {
+  .desktop-view {
+    display: none;
+  }
+
+  .mobile-view {
+    display: block;
+    position: relative;
+    background: var(--page-bg);
+    padding-bottom: 0;
+  }
+
+  .site-header {
+    height: 80px;
+  }
+
+  .site-logo-button {
+    top: 29px;
+    left: 24px;
+  }
+
+  .mobile-main {
+    width: 100%;
+  }
+
+  .mobile-image-stack {
+    width: 100%;
+  }
+
+  .mobile-image {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .mobile-image + .mobile-image {
+    margin-top: var(--mobile-stack-gap, 4px);
+  }
+
+  .mobile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .mobile-image-1 {
+    aspect-ratio: var(--mobile-image-1-ratio, 402 / 516);
+  }
+
+  .mobile-image-2,
+  .mobile-image-3 {
+    aspect-ratio: var(--mobile-image-2-ratio, 402 / 491);
+  }
+
+  .mobile-image-3 {
+    aspect-ratio: var(--mobile-image-3-ratio, var(--mobile-image-2-ratio, 402 / 491));
+  }
+
+  .mobile-text-block {
+    margin-top: 32px;
+    padding: 0 16px;
+  }
+
+  .mobile-product-title {
+    width: 100%;
+  }
+
+  .mobile-product-title-block {
+    gap: 6px;
+  }
+
+  .mobile-product-size {
+    font-size: 12px;
+  }
+
+  .mobile-product-copy {
+    width: 100%;
+    height: auto;
+    margin-top: 16px;
+    padding: 8px 0;
+  }
+
+  .mobile-footer {
+    margin-top: var(--content-footer-gap);
+  }
+
+  .mobile-footer-content {
+    width: 100%;
+    padding: 32px 16px calc(32px + 64px + env(safe-area-inset-bottom));
+  }
+
+  .mobile-bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    isolation: isolate;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 51px;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.56) 0%, rgba(255, 255, 255, 0.28) 46%, rgba(237, 233, 230, 0.22) 100%),
+      rgba(236, 232, 229, 0.22);
+    border-top: 1px solid rgba(255, 255, 255, 0.76);
+    border-bottom: 1px solid rgba(124, 116, 108, 0.12);
+    backdrop-filter: blur(4px) saturate(188%) contrast(1.05);
+    -webkit-backdrop-filter: blur(4px) saturate(188%) contrast(1.05);
+    box-shadow:
+      0 -12px 24px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.78),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.28);
+  }
+
+  .mobile-bottom-nav::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.9;
+    background:
+      linear-gradient(
+        -45deg,
+        rgba(255, 255, 255, 0.78) 0%,
+        rgba(255, 255, 255, 0.42) 26%,
+        rgba(255, 255, 255, 0.16) 56%,
+        rgba(255, 255, 255, 0.36) 100%
+      ),
+      radial-gradient(
+        120% 98% at 14% -20%,
+        rgba(255, 255, 255, 0.48) 0%,
+        rgba(255, 255, 255, 0.1) 60%,
+        rgba(255, 255, 255, 0) 100%
+      );
+    mix-blend-mode: screen;
+  }
+
+  .mobile-bottom-nav::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    background:
+      radial-gradient(
+        136% 92% at 50% -26%,
+        rgba(255, 255, 255, 0.56) 0%,
+        rgba(255, 255, 255, 0.18) 54%,
+        rgba(255, 255, 255, 0) 100%
+      ),
+      linear-gradient(
+        -45deg,
+        rgba(255, 129, 122, 0.1) 0%,
+        rgba(255, 212, 117, 0.08) 24%,
+        rgba(143, 184, 255, 0.09) 52%,
+        rgba(255, 255, 255, 0) 82%
+      );
+    filter: blur(6px);
+    opacity: 0.58;
+  }
+
+  .mobile-nav-btn {
+    position: relative;
+    z-index: 1;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-tertiary);
+    font-family: '210 SoomyungjoOTF', 'Noto Serif KR Local', serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 27px;
+    letter-spacing: var(--text-tracking);
+    cursor: pointer;
+  }
+
+  .mobile-nav-btn img {
+    width: 24px;
+    height: 24px;
+    display: block;
+    flex: 0 0 auto;
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .mobile-bottom-nav {
+      background: rgba(245, 245, 245, 0.94);
+      border-bottom: 0;
+    }
+  }
+}
