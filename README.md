@@ -58,3 +58,13 @@ npm run build:docs
 - `npm test` runs `scripts/verify-refactor-architecture.mjs` and validates layout invariants from the PRD/test spec.
 - This project currently has no dedicated `lint` script; add one before enforcing lint in CI.
 
+## Spec Governance (Traceability / No-Impact)
+
+- Governance contract: see [`SPEC_GOVERNANCE.md`](./SPEC_GOVERNANCE.md).
+- CI must block merges unless the spec-governance verification check passes.
+- Local pre-push verification:
+
+```bash
+npm test
+npm run build
+```
