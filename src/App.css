@@ -101,14 +101,23 @@ body {
 .desktop-view {
   position: relative;
   display: block;
+  overflow-x: scroll;
+  overflow-y: visible;
+  scrollbar-gutter: stable both-edges;
 }
 
 .desktop-content-frame {
-  width: var(--desktop-frame-width, var(--content-width));
+  width: max(
+    var(--desktop-frame-width, var(--content-width)),
+    calc(var(--desktop-main-width, 625px) + var(--desktop-side-width, 321px) + var(--desktop-column-gap, 16px))
+  );
+  min-width: calc(var(--desktop-main-width, 625px) + var(--desktop-side-width, 321px) + var(--desktop-column-gap, 16px));
   height: var(--desktop-frame-height, 1019px);
   margin: 24px auto 0;
   display: grid;
-  grid-template-columns: var(--desktop-main-width, 625px) var(--desktop-side-width, 321px);
+  grid-template-columns:
+    var(--desktop-main-width, 625px)
+    minmax(var(--desktop-side-width, 321px), var(--desktop-side-width, 321px));
   column-gap: var(--desktop-column-gap, 16px);
 }
 
@@ -279,13 +288,16 @@ body {
 }
 
 .desktop-left-column {
+  width: var(--desktop-main-width, 625px);
+  min-width: var(--desktop-main-width, 625px);
+  max-width: var(--desktop-main-width, 625px);
   display: flex;
   flex-direction: column;
   gap: var(--desktop-left-gap, 32px);
 }
 
 .main-image-wrap {
-  width: var(--desktop-main-width, 625px);
+  width: 100%;
   height: var(--desktop-main-height, 802px);
   overflow: hidden;
 }
@@ -325,6 +337,10 @@ body {
 }
 
 .desktop-right-column {
+  width: var(--desktop-side-width, 321px);
+  min-width: var(--desktop-side-width, 321px);
+  max-width: var(--desktop-side-width, 321px);
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   gap: var(--desktop-right-gap, 32px);
@@ -332,7 +348,11 @@ body {
 
 .desktop-detail-grid {
   width: var(--desktop-side-width, 321px);
-  height: var(--desktop-main-height, 802px);
+  min-width: var(--desktop-side-width, 321px);
+  max-width: var(--desktop-side-width, 321px);
+  height: calc(
+    var(--desktop-detail-top-height, 393px) + var(--desktop-detail-bottom-height, 393px) + var(--desktop-detail-gap, 16px)
+  );
   display: flex;
   flex-direction: column;
   gap: var(--desktop-detail-gap, 16px);
@@ -340,6 +360,8 @@ body {
 
 .detail-image {
   width: var(--desktop-side-width, 321px);
+  min-width: var(--desktop-side-width, 321px);
+  max-width: var(--desktop-side-width, 321px);
   overflow: hidden;
 }
 
@@ -372,6 +394,8 @@ body {
 
 .product-copy {
   width: var(--desktop-side-width, 321px);
+  min-width: var(--desktop-side-width, 321px);
+  max-width: var(--desktop-side-width, 321px);
   height: var(--desktop-copy-height, 185px);
   padding: var(--desktop-copy-padding, 8px 0);
   display: flex;

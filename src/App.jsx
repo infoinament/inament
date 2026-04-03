@@ -57,16 +57,19 @@ const PLAIN_SHELF_BULLET_POINTS = [
 
 const DEFAULT_LAYOUT_VARS = {
   '--desktop-frame-width': '962px',
-  '--desktop-frame-height': '1019px',
+  '--desktop-frame-height':
+    'max(calc(var(--desktop-main-height, 78vh) + var(--desktop-left-gap, 32px) + var(--desktop-copy-height, 185px)), calc(var(--desktop-detail-top-height, 393px) + var(--desktop-detail-bottom-height, 393px) + var(--desktop-detail-gap, 16px) + var(--desktop-right-gap, 32px) + var(--desktop-copy-height, 185px)))',
   '--desktop-main-width': '625px',
   '--desktop-side-width': '321px',
   '--desktop-column-gap': '16px',
-  '--desktop-main-height': '802px',
+  '--desktop-detail-min-height': 'calc(var(--desktop-side-width, 321px) * 786 / 642)',
+  '--desktop-main-height':
+    'max(78vh, calc((var(--desktop-detail-min-height, 393px) * 2) + var(--desktop-detail-gap, 16px)))',
   '--desktop-left-gap': '32px',
   '--desktop-right-gap': '32px',
   '--desktop-detail-gap': '16px',
-  '--desktop-detail-top-height': '393px',
-  '--desktop-detail-bottom-height': '393px',
+  '--desktop-detail-top-height': 'calc((var(--desktop-main-height, 78vh) - var(--desktop-detail-gap, 16px)) / 2)',
+  '--desktop-detail-bottom-height': 'calc((var(--desktop-main-height, 78vh) - var(--desktop-detail-gap, 16px)) / 2)',
   '--desktop-detail-top-transform': 'none',
   '--desktop-detail-top-origin': 'center top',
   '--desktop-copy-height': '185px',
