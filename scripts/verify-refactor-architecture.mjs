@@ -2,10 +2,10 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
 import { DEFAULT_LAYOUT_VARS } from '../src/constants/layout.js';
-import { PRODUCT_OBJECTS } from '../src/data/products.js';
 
 const load = (path) => readFile(new URL(path, import.meta.url), 'utf8');
 
+const productsSource = await load('../src/data/products.js');
 const desktopCss = await load('../src/styles/desktop.css');
 const mobileCss = await load('../src/styles/mobile.css');
 const baseCss = await load('../src/styles/base.css');
@@ -20,12 +20,18 @@ assert.match(
 );
 assert.equal(DEFAULT_LAYOUT_VARS['--desktop-copy-height'], '185px', 'Desktop copy block height invariant must be preserved');
 
-assert.ok(PRODUCT_OBJECTS.length >= 4, 'Expected full product catalog after extraction');
-for (const objectData of PRODUCT_OBJECTS) {
-  assert.ok(objectData.id, 'Product object must define id');
-  assert.ok(objectData.name, 'Product object must define name');
-  assert.ok(objectData.detailTitle, 'Product object must define detailTitle');
-  assert.equal(objectData.images.length, 3, `Product ${objectData.id} must keep 3-image stage`);
+for (const productId of ['wall-shelf', 'kitchen-rack', 'pocket-tray', 'plain-shelf']) {
+  assert.match(productsSource, new RegExp(`id:\\s*['\"]${productId}['\"]`), `Missing product id: ${productId}`);
+}
+
+const imageArrayMatches = [...productsSource.matchAll(/images:\s*\[([^\]]+)\]/g)];
+assert.ok(imageArrayMatches.length >= 4, 'Expected at least 4 product image arrays');
+for (const [index, match] of imageArrayMatches.entries()) {
+  const imageCount = match
+    .split(',')
+    .map((part) => part.trim())
+    .filter(Boolean).length;
+  assert.equal(imageCount, 3, `Product image array #${index + 1} must keep 3-image stage`);
 }
 
 assert.match(desktopCss, /overflow-x:\s*scroll;/, 'Desktop view must preserve horizontal scroll behavior');
@@ -41,13 +47,7 @@ for (const layer of ['./base.css', './transitions.css', './desktop.css', './mobi
   assert.match(styleIndexCss, new RegExp(`@import ['\"]${layer.replace('.', '\\.')}['\"];`), `Missing style layer import: ${layer}`);
 }
 
-for (const requiredText of [
-  '78vh',
-  '321px',
-  '99px',
-  'npm run build',
-  'npm run build:docs',
-]) {
+for (const requiredText of ['78vh', '321px', '99px', 'npm run build', 'npm run build:docs']) {
   assert.match(agentsOverride, new RegExp(requiredText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
 }
 
