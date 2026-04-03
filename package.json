@@ -8,7 +8,9 @@
     "build": "vite build",
     "build:pages": "vite build --base=/inament/",
     "build:docs": "npm run build:pages && rm -rf docs && mkdir -p docs && cp -R dist/. docs/",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:refactor": "node scripts/verify-refactor-architecture.mjs",
+    "test": "npm run test:refactor"
   },
   "dependencies": {
     "react": "^18.3.1",
